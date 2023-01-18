@@ -3,6 +3,7 @@ using DAL.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ShopApi;
+using ShopApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,9 @@ builder.Services.AddIdentity<UserEntity, RoleEntity>(opt =>
 }).AddEntityFrameworkStores<AppEFContext>().AddDefaultTokenProviders();
 
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
