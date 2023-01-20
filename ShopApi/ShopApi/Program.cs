@@ -2,8 +2,10 @@ using DAL;
 using DAL.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using ShopApi;
 using ShopApi.Services;
+using ShopApi.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,12 @@ builder.Services.AddIdentity<UserEntity, RoleEntity>(opt =>
     opt.Password.RequireUppercase = false;
     opt.Password.RequireLowercase = false;
 }).AddEntityFrameworkStores<AppEFContext>().AddDefaultTokenProviders();
+
+var googleAuthSettings = builder.Configuration
+    .GetSection("GoogleAuthSettings")
+    .Get<GoogleAuthSettings>();
+
+builder.Services.AddSingleton(googleAuthSettings);
 
 builder.Services.AddControllers();
 

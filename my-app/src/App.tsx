@@ -1,12 +1,21 @@
-import React, { useEffect } from 'react';
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { useGoogleLogin } from '@react-oauth/google';
 import './App.css';
+
+interface IAuthProvider {
+  provider: string,
+  token: string
+}
 
 const App= () => {
 
   const login = useGoogleLogin({
-    onSuccess: tokenResponse => console.log("Is good login GOOGLE ", tokenResponse),
+    onSuccess: tokenResponse => {
+      console.log("Is good login GOOGLE ", tokenResponse);
+      const request : IAuthProvider = {
+        provider: "Google",
+        token: tokenResponse.access_token
+      };
+    },
     onError: () => {
       console.log("Login Failed");
     },

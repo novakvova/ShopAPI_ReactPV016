@@ -36,5 +36,25 @@ namespace ShopApi.Controllers
             string token = await _jwtTokenService.CreateToken(user);
             return Ok(new { token });
         }
+
+        [HttpPost("GoogleExternalLogin")]
+        public async Task<IActionResult> GoogleExternalLoginAsync([FromBody] ExternalLoginRequest request)
+        {
+            try {
+                var payload = await _jwtTokenService.VerifyGoogleToken(request);
+                if (payload == null)
+                {
+                    return BadRequest(new { error = "Щось пішло не так!" });
+                }
+                return Ok(payload);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            
+
+            
+        }
     }
 }
