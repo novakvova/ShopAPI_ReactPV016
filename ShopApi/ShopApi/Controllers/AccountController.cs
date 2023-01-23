@@ -46,7 +46,34 @@ namespace ShopApi.Controllers
                 {
                     return BadRequest(new { error = "Щось пішло не так!" });
                 }
-                return Ok(payload);
+                var info = new UserLoginInfo(request.Provider, payload.Subject, request.Provider);
+                var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+                if (user == null)
+                {
+                    user = await _userManager.FindByEmailAsync(payload.Email);
+                    if (user == null)
+                    {
+                        user = new UserEntity
+                        {
+                            Email = payload.Email,
+                            UserName = payload.Email,
+                            FirstName = payload.GivenName,
+                            LastName = payload.FamilyName
+                        };
+                        var resultCreate = await _userManager.CreateAsync(user);
+                        if (!resultCreate.Succeeded)
+                        {
+                            return BadRequest(new { error = "Помилка створення користувача" });
+                        }
+                    }
+                    var resultLOgin = await _userManager.AddLoginAsync(user, info);
+                    if (!resultLOgin.Succeeded)
+                    {
+                        return BadRequest(new { error = "Створення входу через гугл" });
+                    }
+                }
+                string token = await _jwtTokenService.CreateToken(user);
+                return Ok(new { token });
             }
             catch(Exception ex)
             {
