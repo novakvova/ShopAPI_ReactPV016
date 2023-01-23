@@ -55,9 +55,10 @@ namespace ShopApi.Services
 
         public async Task<GoogleJsonWebSignature.Payload> VerifyGoogleToken(ExternalLoginRequest request)
         {
+            string clientID= _configuration["Authentication:Google:ClientId"];
             var settings = new GoogleJsonWebSignature.ValidationSettings()
             {
-                Audience = new List<string>() { _googleAuthSettings.ClientId }
+                Audience = new List<string>() { clientID }
             };
 
             var payload = await GoogleJsonWebSignature.ValidateAsync(request.Token, settings);
