@@ -1,4 +1,5 @@
-﻿using DAL.Entities.Identity;
+﻿using DAL.Entities;
+using DAL.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,7 @@ namespace DAL
         public AppEFContext(DbContextOptions<AppEFContext> options) : base(options)
         {
         }
+        public DbSet<CategoryEntity> Categories { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
