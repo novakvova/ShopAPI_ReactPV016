@@ -1,4 +1,5 @@
 import { useState } from "react";
+import CropperDialog from "../../common/CropperDialog";
 import StepOnePage from "./step_one";
 import StepTwoPage from "./step_two";
 import { IRegisterModel, IStepOneResult, IStepTwoResult, StepEnum } from "./types";
@@ -28,7 +29,8 @@ const RegisterPage : React.FC = () => {
     return (
         <>
             <h1>Реєстрація</h1>
-            {data}
+            <CropperDialog />
+            {/* {data} */}
         </>
     );
 }

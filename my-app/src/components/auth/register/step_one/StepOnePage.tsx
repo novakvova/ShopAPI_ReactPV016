@@ -10,6 +10,7 @@ const StepOnePage : React.FC<IStepOneProps> = ({
             lastName: "Шлунок"
         });
     }
+    
     return (
         <>
             <h1>Реєстрація етап 1</h1>
