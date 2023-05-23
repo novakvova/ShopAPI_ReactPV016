@@ -1,3 +1,4 @@
 export interface ICroppedModal {
-    touched?: boolean
+    touched?: boolean,
+    imageView?: string
 }

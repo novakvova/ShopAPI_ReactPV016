@@ -5,61 +5,60 @@ import "cropperjs/dist/cropper.css";
 import "./style.css";
 import { ICroppedModal } from "./types";
 
-const CropperDialog: React.FC<ICroppedModal> = ({ touched = false }) => {
+const CropperDialog: React.FC<ICroppedModal> = ({
+  touched = false,
+  imageView = "https://cdn3.iconfinder.com/data/icons/photo-tools/65/select-512.png",
+}) => {
   console.log("View Modal");
 
   const [show, setShow] = useState<boolean>(false);
   const [image, setImage] = useState<string>("");
   const imgRef = useRef<HTMLImageElement>(); //посилання на тег img в модалці
 
-  const [currentImage, setCurrentImage] = useState<string>(
-    "https://cdn3.iconfinder.com/data/icons/photo-tools/65/select-512.png"
-  );
+  const [currentImage, setCurrentImage] = useState<string>(imageView);
 
   const [cropperObj, setCropperObj] = useState<Cropper>();
 
   useEffect(() => {
-    if(imgRef.current)
-    {
-        const cropper = new Cropper(imgRef.current as HTMLImageElement, {
-            viewMode: 1,
-            aspectRatio: 1/1,
-            // preview: imgPrevRef.current
-        });
-        setCropperObj(cropper);
+    if (imgRef.current) {
+      const cropper = new Cropper(imgRef.current as HTMLImageElement, {
+        viewMode: 1,
+        aspectRatio: 1 / 1,
+        // preview: imgPrevRef.current
+      });
+      setCropperObj(cropper);
     }
-  },[]);
+  }, []);
 
   const handleSelectImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length) {
-        const file = files[0];
-        if (/^image\/\w+/.test(file.type)) {
-            const url = URL.createObjectURL(file);
-            await toggleModal();
-            await setImage(url);
-            cropperObj?.replace(url);
-        }
-    }
-    else {
-        alert("Оберіть файл зображення");
+      const file = files[0];
+      if (/^image\/\w+/.test(file.type)) {
+        const url = URL.createObjectURL(file);
+        await toggleModal();
+        await setImage(url);
+        cropperObj?.replace(url);
       }
-      e.target.value="";
+    } else {
+      alert("Оберіть файл зображення");
+    }
+    e.target.value = "";
   };
 
   const toggleModal = async () => {
-    await setShow((prev)=>!prev);
-  }
+    await setShow((prev) => !prev);
+  };
 
   const handleCroppedImage = async () => {
     const base64 = cropperObj?.getCroppedCanvas().toDataURL() as string;
-    cropperObj?.getCroppedCanvas().toBlob(async (data)=> {
-        console.log("data blob", data);
+    cropperObj?.getCroppedCanvas().toBlob(async (data) => {
+      console.log("data blob", data);
     });
     await setCurrentImage(base64);
     await toggleModal();
     //await onChange(field, base64);
-  }
+  };
 
   return (
     <>
@@ -113,8 +112,11 @@ const CropperDialog: React.FC<ICroppedModal> = ({ touched = false }) => {
               >
                 Close
               </button>
-              <button type="button" className="btn btn-primary"
-                onClick={handleCroppedImage}>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleCroppedImage}
+              >
                 Save changes
               </button>
             </div>

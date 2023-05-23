@@ -29,7 +29,7 @@ const RegisterPage : React.FC = () => {
     return (
         <>
             <h1>Реєстрація</h1>
-            <CropperDialog />
+            <CropperDialog imageView="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmIYs4JP30mlSO5lK-NGbhAIGPbSB44uW_jg&usqp=CAU"/>
             {/* {data} */}
         </>
     );
